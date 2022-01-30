@@ -12,10 +12,8 @@ namespace WebApi.Mapping
     {
         public CourseMappingsProfile()
         {
-            CreateMap<CourseModel, CourseDto>()
-                .ForMember(s => s.Lessons, map => map.Ignore())
-                .ForMember(s => s.Id, map => map.Ignore());
-            CreateMap<CourseDto, CourseCardModel>();
+            CreateMap<CourseDto, CourseModel>();
+            CreateMap<CourseModel, CourseDto>();
         }
     }
 }
