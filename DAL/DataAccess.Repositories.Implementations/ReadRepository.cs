@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccess.Abstraction;
+using DataAccess.Entities;
+using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Implementation

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using DataAccess.Entities;
 
-namespace DataAccess.Abstraction
+namespace DataAccess.Repositories
 {
     /// <summary>
     /// Базовый интерфейс всех репозиториев

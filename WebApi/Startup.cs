@@ -1,5 +1,4 @@
 using AutoMapper;
-using ComponentRegistrar;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +23,7 @@ namespace WebApi
             InstallAutomapper(services);
             services.AddServices(Configuration);
             services.AddControllers();
-
+            services.AddCors();
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();
         }
@@ -36,8 +35,13 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
+            app.UseCors(
+                options => options
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+            );
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

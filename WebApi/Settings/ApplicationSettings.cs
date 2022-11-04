@@ -1,4 +1,4 @@
-namespace ComponentRegistrar.Settings
+namespace WebApi.Settings
 {
     public class ApplicationSettings
     {

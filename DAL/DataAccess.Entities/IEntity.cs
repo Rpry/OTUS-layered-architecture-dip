@@ -1,4 +1,4 @@
-namespace DataAccess.Abstraction
+namespace DataAccess.Entities
 {
     /// <summary>
     /// Интерфейс сущности с идентификатором

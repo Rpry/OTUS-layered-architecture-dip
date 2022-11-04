@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\DataAccess.Abstraction\DataAccess.Abstraction.csproj" />
   </ItemGroup>
 
 </Project>

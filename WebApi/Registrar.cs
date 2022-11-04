@@ -1,14 +1,12 @@
-﻿using AutoMapper;
-using BusinessLogic.Abstractions;
+﻿using BusinessLogic.Abstractions;
 using BusinessLogic.Services;
-using BusinessLogic.Services.Mapping;
-using ComponentRegistrar.Settings;
 using DataAccess.EntityFramework;
 using DataAccess.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebApi.Settings;
 
-namespace ComponentRegistrar
+namespace WebApi
 {
     /// <summary>
     /// Регистратор сервиса
@@ -27,8 +25,7 @@ namespace ComponentRegistrar
 
         private static IServiceCollection InstallServices(this IServiceCollection serviceCollection)
         {
-            serviceCollection
-                .AddTransient<ICourseService, CourseService>()
+            serviceCollection.AddTransient<ICourseService, CourseService>()
                 .AddTransient<ILessonService, LessonService>();
             return serviceCollection;
         }

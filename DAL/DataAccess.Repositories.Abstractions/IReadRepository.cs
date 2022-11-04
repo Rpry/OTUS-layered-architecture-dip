@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DataAccess.Entities;
 
-namespace DataAccess.Abstraction
+namespace DataAccess.Repositories
 {
     /// <summary>
     /// Интерфейс репозитория, предназначенного для чтения

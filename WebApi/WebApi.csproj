@@ -15,7 +15,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ComponentRegistrar\ComponentRegistrar.csproj" />
+      <ProjectReference Include="..\BLL\BusinessLogic.Services.Implementations\BusinessLogic.Services.Implementations.csproj" />
+      <ProjectReference Include="..\DAL\DataAccess.Repositories.Implementations\DataAccess.Repositories.Implementations.csproj" />
     </ItemGroup>
 
     <ItemGroup>

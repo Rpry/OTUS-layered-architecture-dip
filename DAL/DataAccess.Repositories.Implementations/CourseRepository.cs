@@ -25,7 +25,7 @@ namespace DataAccess.Repositories
         /// <returns>список ДТО курсов</returns>
         public async Task<List<Course>> GetPagedAsync(int page, int itemsPerPage)
         {
-            var query = GetAll();
+            var query = GetAll().Where(c => !c.Deleted);
             return await query
                 .Skip((page - 1) * itemsPerPage)
                 .Take(itemsPerPage)

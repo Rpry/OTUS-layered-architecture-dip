@@ -1,6 +1,4 @@
-﻿using DataAccess.Abstraction;
-
-namespace DataAccess.Entities
+﻿namespace DataAccess.Entities
 {
     /// <summary>
     /// Модель урока
