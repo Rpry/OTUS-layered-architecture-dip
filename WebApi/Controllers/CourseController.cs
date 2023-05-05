@@ -50,10 +50,10 @@ namespace WebApi.Controllers
             return Ok();
         }
         
-        [HttpGet("list/{page}/{itemsPerPage}")]
-        public async Task<IActionResult> GetList(int page, int itemsPerPage)
+        [HttpPost("list")]
+        public async Task<IActionResult> GetList(CourseFilterModel filterModel)
         {
-            return Ok(_mapper.Map<List<CourseModel>>(await _service.GetPaged(page, itemsPerPage)));
+            return Ok(_mapper.Map<List<CourseModel>>(await _service.GetPaged(filterModel.Page, filterModel.ItemsPerPage)));
         }
     }
 }
