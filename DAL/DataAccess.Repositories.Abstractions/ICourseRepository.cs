@@ -5,7 +5,7 @@ using DataAccess.Entities;
 namespace DataAccess.Repositories
 {
     /// <summary>
-    /// Репозиторий работы с уроками
+    /// Интерфейс репозитория работы с уроками
     /// </summary>
     public interface ICourseRepository: IRepository<Course, int>
     {
@@ -14,7 +14,7 @@ namespace DataAccess.Repositories
         /// </summary>
         /// <param name="page">номер страницы</param>
         /// <param name="itemsPerPage">объем страницы</param>
-        /// <returns>список ДТО курсов</returns>
+        /// <returns> Список курсов</returns>
         Task<List<Course>> GetPagedAsync(int page, int itemsPerPage);
     }
 }

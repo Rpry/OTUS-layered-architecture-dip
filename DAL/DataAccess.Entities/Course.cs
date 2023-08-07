@@ -3,7 +3,7 @@
 namespace DataAccess.Entities
 {
     /// <summary>
-    /// Модель курса
+    /// Курс
     /// </summary>
     public class Course: IEntity<int>
     {

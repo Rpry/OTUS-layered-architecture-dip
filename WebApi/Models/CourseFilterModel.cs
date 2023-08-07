@@ -1,5 +1,8 @@
 namespace WebApi.Models
 {
+    /// <summary>
+    /// Модель фильтра курсов
+    /// </summary>
     public class CourseFilterModel
     {
         public string Name { get; set; }

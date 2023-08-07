@@ -5,7 +5,7 @@ using DataAccess.Entities;
 namespace DataAccess.Repositories
 {
     /// <summary>
-    /// Репозиторий работы с уроками
+    /// Интерфейс репозитория работы с уроками
     /// </summary>
     public interface ILessonRepository: IRepository<Lesson, int>
     {

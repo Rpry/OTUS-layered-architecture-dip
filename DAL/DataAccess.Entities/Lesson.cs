@@ -1,7 +1,7 @@
 ﻿namespace DataAccess.Entities
 {
     /// <summary>
-    /// Модель урока
+    /// Урок
     /// </summary>
     public class Lesson: IEntity<int>
     {

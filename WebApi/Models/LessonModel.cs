@@ -1,5 +1,8 @@
 ﻿namespace WebApi.Models
 {
+    /// <summary>
+    /// Модель урока
+    /// </summary>
     public class LessonModel
     {
         /// <summary>
