@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataAccess.Entities;
 using DataAccess.EntityFramework;
-using DataAccess.Implementation;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
