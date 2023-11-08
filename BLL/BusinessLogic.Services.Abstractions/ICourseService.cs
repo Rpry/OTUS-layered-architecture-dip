@@ -15,32 +15,32 @@ namespace BusinessLogic.Abstractions
         /// <param name="page">номер страницы</param>
         /// <param name="pageSize">объем страницы</param>
         /// <returns></returns>
-        Task<ICollection<CourseDto>> GetPaged(int page, int pageSize);
+        Task<ICollection<CourseDto>> GetPagedAsync(int page, int pageSize);
 
         /// <summary>
         /// Получить
         /// </summary>
         /// <param name="id">идентификатор</param>
         /// <returns>ДТО курса</returns>
-        Task<CourseDto> GetById(int id);
+        Task<CourseDto> GetByIdAsync(int id);
 
         /// <summary>
         /// Создать
         /// </summary>
-        /// <param name="courseDto">ДТО курса</para
-        Task<int> Create(CourseDto courseDto);
+        /// <param name="courseDto">ДТО курса</param>
+        Task<int> CreateAsync(CourseDto courseDto);
 
         /// <summary>
         /// Изменить
         /// </summary>
         /// <param name="id">идентификатор</param>
         /// <param name="courseDto">ДТО курса</param>
-        Task Update(int id, CourseDto courseDto);
+        Task UpdateAsync(int id, CourseDto courseDto);
 
         /// <summary>
         /// Удалить
         /// </summary>
         /// <param name="id">идентификатор</param>
-        Task Delete(int id);
+        Task DeleteAsync(int id);
     }
 }

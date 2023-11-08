@@ -13,9 +13,9 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class LessonController: ControllerBase
     {
-        private ILessonService _service;
+        private readonly ILessonService _service;
         private readonly ILogger<LessonController> _logger;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public LessonController(ILessonService service, ILogger<LessonController> logger, IMapper mapper)
         {
@@ -25,35 +25,35 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            return Ok(_mapper.Map<LessonModel>(await _service.GetById(id)));
+            return Ok(_mapper.Map<LessonModel>(await _service.GetByIdAsync(id)));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(LessonModel lessonModel)
+        public async Task<IActionResult> AddAsync(LessonModel lessonModel)
         {
-            return Ok(await _service.Create(_mapper.Map<LessonDto>(lessonModel)));
+            return Ok(await _service.CreateAsync(_mapper.Map<LessonDto>(lessonModel)));
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(int id, LessonModel lessonModel)
+        public async Task<IActionResult> EditAsync(int id, LessonModel lessonModel)
         {
-            await _service.Update(id, _mapper.Map<LessonDto>(lessonModel));
+            await _service.UpdateAsync(id, _mapper.Map<LessonDto>(lessonModel));
             return Ok();
         }
         
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            await _service.Delete(id);
+            await _service.DeleteAsync(id);
             return Ok();
         }
         
         [HttpGet("list/{page}/{itemsPerPage}")]
-        public async Task<IActionResult> GetList(int page, int itemsPerPage)
+        public async Task<IActionResult> GetListAsync(int page, int itemsPerPage)
         {
-            return Ok(_mapper.Map<List<LessonModel>>(await _service.GetPaged(page, itemsPerPage)));
+            return Ok(_mapper.Map<List<LessonModel>>(await _service.GetPagedAsync(page, itemsPerPage)));
         }
     }
 }

@@ -25,7 +25,8 @@ namespace WebApi
 
         private static IServiceCollection InstallServices(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTransient<ICourseService, CourseService>()
+            serviceCollection
+                .AddTransient<ICourseService, CourseService>()
                 .AddTransient<ILessonService, LessonService>();
             return serviceCollection;
         }

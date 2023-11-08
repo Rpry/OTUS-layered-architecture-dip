@@ -13,11 +13,14 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class CourseController: ControllerBase
     {
-        private ICourseService _service;
-        private IMapper _mapper;
+        private readonly ICourseService _service;
+        private readonly IMapper _mapper;
         private readonly ILogger<CourseController> _logger;
 
-        public CourseController(ICourseService service, ILogger<CourseController> logger, IMapper mapper)
+        public CourseController(
+            ICourseService service,
+            ILogger<CourseController> logger,
+            IMapper mapper)
         {
             _service = service;
             _logger = logger;
@@ -25,35 +28,35 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            return Ok(_mapper.Map<CourseModel>(await _service.GetById(id)));
+            return Ok(_mapper.Map<CourseModel>(await _service.GetByIdAsync(id)));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CourseModel courseModel)
+        public async Task<IActionResult> AddAsync(CourseModel courseModel)
         {
-            return Ok(await _service.Create(_mapper.Map<CourseDto>(courseModel)));
+            return Ok(await _service.CreateAsync(_mapper.Map<CourseModel, CourseDto>(courseModel)));
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(int id, CourseModel courseModel)
+        public async Task<IActionResult> EditAsync(int id, CourseModel courseModel)
         {
-            await _service.Update(id, _mapper.Map<CourseDto>(courseModel));
+            await _service.UpdateAsync(id, _mapper.Map<CourseDto>(courseModel));
             return Ok();
         }
         
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            await _service.Delete(id);
+            await _service.DeleteAsync(id);
             return Ok();
         }
         
         [HttpPost("list")]
-        public async Task<IActionResult> GetList(CourseFilterModel filterModel)
+        public async Task<IActionResult> GetListAsync(CourseFilterModel filterModel)
         {
-            return Ok(_mapper.Map<List<CourseModel>>(await _service.GetPaged(filterModel.Page, filterModel.ItemsPerPage)));
+            return Ok(_mapper.Map<List<CourseModel>>(await _service.GetPagedAsync(filterModel.Page, filterModel.ItemsPerPage)));
         }
     }
 }
