@@ -1,47 +1,47 @@
-using BusinessLogic.Contracts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BusinessLogic.Contracts.Lesson;
 
 namespace BusinessLogic.Abstractions
 {
     /// <summary>
-    /// Сервис работы с уроками (интерфейс)
+    /// Сервис работы с уроками (интерфейс).
     /// </summary>
     public interface ILessonService
     {
         /// <summary>
-        /// Получить список
+        /// Получить список уроков.
         /// </summary>
-        /// <param name="page">номер страницы</param>
-        /// <param name="pageSize">объем страницы</param>
-        /// <returns></returns>
+        /// <param name="page"> Номер страницы. </param>
+        /// <param name="pageSize"> Объем страницы. </param>
+        /// <returns> Список уроков. </returns>
         Task<ICollection<LessonDto>> GetPagedAsync(int page, int pageSize);
 
         /// <summary>
-        /// Получить
+        /// Получить урок.
         /// </summary>
-        /// <param name="id">идентификатор</param>
-        /// <returns>ДТО урока</returns>
+        /// <param name="id"> Идентификатор. </param>
+        /// <returns> ДТО урока. </returns>
         Task<LessonDto> GetByIdAsync(int id);
 
         /// <summary>
-        /// Создать
+        /// Создать урок.
         /// </summary>
-        /// <param name="lessonDto">ДТО урока</param>
-        /// <returns>идентификатор</returns>
-        Task<int> CreateAsync(LessonDto lessonDto);
+        /// <param name="creatingLessonDto"> ДТО урока. </param>
+        /// <returns> Идентификатор. </returns>
+        Task<int> CreateAsync(CreatingLessonDto creatingLessonDto);
 
         /// <summary>
-        /// Изменить
+        /// Изменить урок.
         /// </summary>
-        /// <param name="id">идентификатор</param>
-        /// <param name="lessonDto">ДТО урока</param>
-        Task UpdateAsync(int id, LessonDto lessonDto);
+        /// <param name="id"> Идентификатор. </param>
+        /// <param name="updatingLessonDto"> ДТО урока. </param>
+        Task UpdateAsync(int id, UpdatingLessonDto updatingLessonDto);
 
         /// <summary>
-        /// Удалить
+        /// Удалить урок.
         /// </summary>
-        /// <param name="id">идентификатор</param>
+        /// <param name="id"> Идентификатор. </param>
         Task DeleteAsync(int id);
     }
 }

@@ -1,15 +1,16 @@
-﻿using BusinessLogic.Abstractions;
+﻿using System;
+using BusinessLogic.Abstractions;
 using DataAccess.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic.Contracts;
+using BusinessLogic.Contracts.Lesson;
 using DataAccess.Repositories;
 
 namespace BusinessLogic.Services
 {
     /// <summary>
-    /// Сервис работы с уроками
+    /// Сервис работы с уроками (интерфейс).
     /// </summary>
     public class LessonService : ILessonService
     {
@@ -25,11 +26,11 @@ namespace BusinessLogic.Services
         }
 
         /// <summary>
-        /// Получить список
+        /// Получить список уроков.
         /// </summary>
-        /// <param name="page">номер страницы</param>
-        /// <param name="pageSize">объем страницы</param>
-        /// <returns></returns>
+        /// <param name="page"> Номер страницы. </param>
+        /// <param name="pageSize"> Объем страницы. </param>
+        /// <returns> Список уроков. </returns>
         public async Task<ICollection<LessonDto>> GetPagedAsync(int page, int pageSize)
         {
             ICollection<Lesson> entities = await _lessonRepository.GetPagedAsync(page, pageSize);
@@ -37,10 +38,10 @@ namespace BusinessLogic.Services
         }
 
         /// <summary>
-        /// Получить
+        /// Получить урок.
         /// </summary>
-        /// <param name="id">идентификатор</param>
-        /// <returns>ДТО урока</returns>
+        /// <param name="id"> Идентификатор. </param>
+        /// <returns> ДТО урока. </returns>
         public async Task<LessonDto> GetByIdAsync(int id)
         {
             var lesson = await _lessonRepository.GetAsync(id);
@@ -48,36 +49,41 @@ namespace BusinessLogic.Services
         }
 
         /// <summary>
-        /// Создать
+        /// Создать урок.
         /// </summary>
-        /// <param name="lessonDto">ДТО урока</param>
-        /// <returns>идентификатор</returns>
-        public async Task<int> CreateAsync(LessonDto lessonDto)
+        /// <param name="creatingLessonDto"> ДТО урока. </param>
+        /// <returns> Идентификатор. </returns>
+        public async Task<int> CreateAsync(CreatingLessonDto creatingLessonDto)
         {
-            var entity = _mapper.Map<LessonDto, Lesson>(lessonDto);
-            entity.CourseId = lessonDto.CourseId;
-            var res = await _lessonRepository.AddAsync(entity);
+            var lesson = _mapper.Map<CreatingLessonDto, Lesson>(creatingLessonDto);
+            lesson.CourseId = creatingLessonDto.CourseId;
+            var createdLesson = await _lessonRepository.AddAsync(lesson);
             await _lessonRepository.SaveChangesAsync();
-            return res.Id;
+            return createdLesson.Id;
         }
 
         /// <summary>
-        /// Изменить
+        /// Изменить урок.
         /// </summary>
-        /// <param name="id">идентификатор</param>
-        /// <param name="lessonDto">ДТО урока</param>
-        public async Task UpdateAsync(int id, LessonDto lessonDto)
+        /// <param name="id"> Идентификатор. </param>
+        /// <param name="updatingLessonDto"> ДТО урока. </param>
+        public async Task UpdateAsync(int id, UpdatingLessonDto updatingLessonDto)
         {
-            var entity = _mapper.Map<LessonDto, Lesson>(lessonDto);
-            entity.Id = id;
-            _lessonRepository.Update(entity);
+            var lesson = await _lessonRepository.GetAsync(id);
+            if (lesson == null)
+            {
+                throw new Exception($"Урок с id = {id} не найден");
+            }
+
+            lesson.Subject = updatingLessonDto.Subject;
+            _lessonRepository.Update(lesson);
             await _lessonRepository.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Удалить
+        /// Удалить урок.
         /// </summary>
-        /// <param name="id">идентификатор</param>
+        /// <param name="id"> Идентификатор. </param>
         public async Task DeleteAsync(int id)
         {
             var lesson = await _lessonRepository.GetAsync(id);

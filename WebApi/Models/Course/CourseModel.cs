@@ -1,30 +1,31 @@
 ﻿using System.Collections.Generic;
+using WebApi.Models.Lesson;
 
-namespace BusinessLogic.Contracts
+namespace WebApi.Models.Course
 {
     /// <summary>
-    /// ДТО курса
+    /// Модель курса.
     /// </summary>
-    public class CourseDto
+    public class CourseModel
     {
         /// <summary>
-        /// Id
+        /// Id.
         /// </summary>
         public int Id { get; set; }
         
         /// <summary>
-        /// Название
+        /// Название.
         /// </summary>
         public string Name { get; set; }
         
         /// <summary>
-        /// Стоимость
+        /// Стоимость.
         /// </summary>
         public decimal Price { get; set; }
 
         /// <summary>
-        /// Уроки
+        /// Уроки.
         /// </summary>
-        public List<LessonDto> Lessons { get; set; }
+        public List<LessonModel> Lessons { get; set; }
     }
 }

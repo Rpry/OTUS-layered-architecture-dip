@@ -1,7 +1,6 @@
 using AutoMapper;
-using BusinessLogic.Contracts;
-using DataAccess.Entities;
-using WebApi.Models;
+using BusinessLogic.Contracts.Course;
+using WebApi.Models.Course;
 
 namespace WebApi.Mapping
 {
@@ -13,7 +12,9 @@ namespace WebApi.Mapping
         public CourseMappingsProfile()
         {
             CreateMap<CourseDto, CourseModel>();
-            CreateMap<CourseModel, CourseDto>();
+            CreateMap<CreatingCourseModel, CreatingCourseDto>();
+            CreateMap<UpdatingCourseModel, UpdatingCourseDto>();
+            CreateMap<CourseFilterModel, CourseFilterDto>();
         }
     }
 }

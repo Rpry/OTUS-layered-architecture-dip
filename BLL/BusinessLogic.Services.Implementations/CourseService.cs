@@ -1,15 +1,16 @@
-﻿using BusinessLogic.Abstractions;
+﻿using System;
+using BusinessLogic.Abstractions;
 using DataAccess.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic.Contracts;
+using BusinessLogic.Contracts.Course;
 using DataAccess.Repositories;
 
 namespace BusinessLogic.Services
 {
     /// <summary>
-    /// Cервис работы с курсами
+    /// Cервис работы с курсами.
     /// </summary>
     public class CourseService : ICourseService
     {
@@ -25,11 +26,11 @@ namespace BusinessLogic.Services
         }
 
         /// <summary>
-        /// Получить список
+        /// Получить список курсов.
         /// </summary>
-        /// <param name="page">номер страницы</param>
-        /// <param name="pageSize">объем страницы</param>
-        /// <returns></returns>
+        /// <param name="page"> Номер страницы. </param>
+        /// <param name="pageSize"> Объем страницы. </param>
+        /// <returns> Список курсов. </returns>
         public async Task<ICollection<CourseDto>> GetPagedAsync(int page, int pageSize)
         {
             ICollection<Course> entities = await _courseRepository.GetPagedAsync(page, pageSize);
@@ -37,10 +38,10 @@ namespace BusinessLogic.Services
         }
 
         /// <summary>
-        /// Получить
+        /// Получить курс.
         /// </summary>
-        /// <param name="id">идентификатор</param>
-        /// <returns>ДТО курса</returns>
+        /// <param name="id"> Идентификатор. </param>
+        /// <returns> ДТО курса. </returns>
         public async Task<CourseDto> GetByIdAsync(int id)
         {
             var course = await _courseRepository.GetAsync(id);
@@ -48,35 +49,41 @@ namespace BusinessLogic.Services
         }
 
         /// <summary>
-        /// Создать
+        /// Создать курс.
         /// </summary>
-        /// <param name="courseDto">ДТО курса</param>
-        /// <returns>идентификатор</returns>
-        public async Task<int> CreateAsync(CourseDto courseDto)
+        /// <param name="creatingCourseDto"> ДТО создаваемого курса. </param>
+        /// <returns> Идентификатор. </returns>
+        public async Task<int> CreateAsync(CreatingCourseDto creatingCourseDto)
         {
-            var entity = _mapper.Map<CourseDto, Course>(courseDto);
-            var res = await _courseRepository.AddAsync(entity);
+            var course = _mapper.Map<CreatingCourseDto, Course>(creatingCourseDto);
+            var createdCourse = await _courseRepository.AddAsync(course);
             await _courseRepository.SaveChangesAsync();
-            return res.Id;
+            return createdCourse.Id;
         }
 
         /// <summary>
-        /// Изменить
+        /// Изменить курс.
         /// </summary>
-        /// <param name="id">идентификатор</param>
-        /// <param name="courseDto">ДТО курса</param>
-        public async Task UpdateAsync(int id, CourseDto courseDto)
+        /// <param name="id"> Идентификатор. </param>
+        /// <param name="updatingCourseDto"> ДТО редактируемого курса. </param>
+        public async Task UpdateAsync(int id, UpdatingCourseDto updatingCourseDto)
         {
-            var entity = _mapper.Map<CourseDto, Course>(courseDto);
-            entity.Id = id;
-            _courseRepository.Update(entity);
+            var course = await _courseRepository.GetAsync(id);
+            if (course == null)
+            {
+                throw new Exception($"Курс с идентфикатором {id} не найден");
+            }
+
+            course.Name = updatingCourseDto.Name;
+            course.Price = updatingCourseDto.Price;
+            _courseRepository.Update(course);
             await _courseRepository.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Удалить
+        /// Удалить курс.
         /// </summary>
-        /// <param name="id">идентификатор</param>
+        /// <param name="id"> Идентификатор. </param>
         public async Task DeleteAsync(int id)
         {
             var course = await _courseRepository.GetAsync(id);

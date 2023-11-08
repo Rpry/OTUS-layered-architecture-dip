@@ -1,46 +1,46 @@
-using BusinessLogic.Contracts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BusinessLogic.Contracts.Course;
 
 namespace BusinessLogic.Abstractions
 {
     /// <summary>
-    /// Cервис работы с курсами (интерфейс)
+    /// Cервис работы с курсами (интерфейс).
     /// </summary>
     public interface ICourseService
     {
         /// <summary>
-        /// Получить список
+        /// Получить список курсов.
         /// </summary>
-        /// <param name="page">номер страницы</param>
-        /// <param name="pageSize">объем страницы</param>
-        /// <returns></returns>
+        /// <param name="page"> Номер страницы. </param>
+        /// <param name="pageSize"> Объем страницы. </param>
+        /// <returns> Список курсов. </returns>
         Task<ICollection<CourseDto>> GetPagedAsync(int page, int pageSize);
 
         /// <summary>
-        /// Получить
+        /// Получить курс.
         /// </summary>
-        /// <param name="id">идентификатор</param>
-        /// <returns>ДТО курса</returns>
+        /// <param name="id"> Идентификатор. </param>
+        /// <returns> ДТО курса. </returns>
         Task<CourseDto> GetByIdAsync(int id);
 
         /// <summary>
-        /// Создать
+        /// Создать курс.
         /// </summary>
-        /// <param name="courseDto">ДТО курса</param>
-        Task<int> CreateAsync(CourseDto courseDto);
+        /// <param name="creatingCourseDto"> ДТО создаваемого курса. </param>
+        Task<int> CreateAsync(CreatingCourseDto creatingCourseDto);
 
         /// <summary>
-        /// Изменить
+        /// Изменить курс.
         /// </summary>
-        /// <param name="id">идентификатор</param>
-        /// <param name="courseDto">ДТО курса</param>
-        Task UpdateAsync(int id, CourseDto courseDto);
+        /// <param name="id"> Иентификатор. </param>
+        /// <param name="updatingCourseDto"> ДТО редактируемого курса. </param>
+        Task UpdateAsync(int id, UpdatingCourseDto updatingCourseDto);
 
         /// <summary>
-        /// Удалить
+        /// Удалить курс.
         /// </summary>
-        /// <param name="id">идентификатор</param>
+        /// <param name="id"> Идентификатор. </param>
         Task DeleteAsync(int id);
     }
 }

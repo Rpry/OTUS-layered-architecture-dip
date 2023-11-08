@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic.Abstractions;
-using BusinessLogic.Contracts;
+using BusinessLogic.Contracts.Lesson;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebApi.Models;
+using WebApi.Models.Lesson;
 
 namespace WebApi.Controllers
 {
@@ -31,15 +31,15 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAsync(LessonModel lessonModel)
+        public async Task<IActionResult> AddAsync(CreatingLessonModel creatingLessonDto)
         {
-            return Ok(await _service.CreateAsync(_mapper.Map<LessonDto>(lessonModel)));
+            return Ok(await _service.CreateAsync(_mapper.Map<CreatingLessonModel, CreatingLessonDto>(creatingLessonDto)));
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditAsync(int id, LessonModel lessonModel)
+        public async Task<IActionResult> EditAsync(int id, UpdatingLessonModel creatingLessonDto)
         {
-            await _service.UpdateAsync(id, _mapper.Map<LessonDto>(lessonModel));
+            await _service.UpdateAsync(id, _mapper.Map<UpdatingLessonModel, UpdatingLessonDto>(creatingLessonDto));
             return Ok();
         }
         

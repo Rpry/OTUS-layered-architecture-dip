@@ -1,17 +1,17 @@
-namespace WebApi.Models
+﻿namespace BusinessLogic.Contracts.Course
 {
     /// <summary>
-    /// Курс
+    /// ДТО курса.
     /// </summary>
-    public class CreateCourseModel
+    public class CreatingCourseDto
     {
         /// <summary>
-        /// Название
+        /// Название.
         /// </summary>
         public string Name { get; set; }
-
+        
         /// <summary>
-        /// Стоимость
+        /// Стоимость.
         /// </summary>
         public decimal Price { get; set; }
     }

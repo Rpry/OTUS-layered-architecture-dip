@@ -1,5 +1,5 @@
 using AutoMapper;
-using BusinessLogic.Contracts;
+using BusinessLogic.Contracts.Course;
 using DataAccess.Entities;
 
 namespace BusinessLogic.Services.Mapping
@@ -13,7 +13,12 @@ namespace BusinessLogic.Services.Mapping
         {
             CreateMap<Course, CourseDto>();
             
-            CreateMap<CourseDto, Course>()
+            CreateMap<CreatingCourseDto, Course>()
+                .ForMember(d => d.Id, map => map.Ignore())
+                .ForMember(d => d.Deleted, map => map.Ignore())
+                .ForMember(d => d.Lessons, map => map.Ignore());
+            
+            CreateMap<UpdatingCourseDto, Course>()
                 .ForMember(d => d.Id, map => map.Ignore())
                 .ForMember(d => d.Deleted, map => map.Ignore())
                 .ForMember(d => d.Lessons, map => map.Ignore());
