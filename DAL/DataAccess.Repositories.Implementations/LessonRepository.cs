@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DataAccess.Repositories
 {
     /// <summary>
-    /// Репозиторий работы с уроками
+    /// Репозиторий работы с уроками.
     /// </summary>
     public class LessonRepository: Repository<Lesson, int>, ILessonRepository 
     {
@@ -17,6 +17,12 @@ namespace DataAccess.Repositories
         {
         }
         
+        /// <summary>
+        /// Получить список уроков.
+        /// </summary>
+        /// <param name="page"> Номер страницы. </param>
+        /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+        /// <returns> Список уроков. </returns>
         public async Task<List<Lesson>> GetPagedAsync(int page, int itemsPerPage)
         {
             var query = GetAll();

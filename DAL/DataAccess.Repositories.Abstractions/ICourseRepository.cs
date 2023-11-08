@@ -6,16 +6,16 @@ using Services.Repositories.Abstractions;
 namespace DataAccess.Repositories
 {
     /// <summary>
-    /// Интерфейс репозитория работы с уроками
+    /// Интерфейс репозитория работы с курсами.
     /// </summary>
     public interface ICourseRepository: IRepository<Course, int>
     {
         /// <summary>
-        /// Получить постраничный список
+        /// Получить постраничный список.
         /// </summary>
-        /// <param name="page">номер страницы</param>
-        /// <param name="itemsPerPage">объем страницы</param>
-        /// <returns> Список курсов</returns>
+        /// <param name="page"> Номер страницы. </param>
+        /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+        /// <returns> Список курсов. </returns>
         Task<List<Course>> GetPagedAsync(int page, int itemsPerPage);
     }
 }

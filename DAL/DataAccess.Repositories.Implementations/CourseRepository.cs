@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DataAccess.Repositories
 {
     /// <summary>
-    /// Репозиторий работы с курсами
+    /// Репозиторий работы с курсами.
     /// </summary>
     public class CourseRepository: Repository<Course, int>, ICourseRepository 
     {
@@ -18,11 +18,11 @@ namespace DataAccess.Repositories
         }
       
         /// <summary>
-        /// Получить постраничный список
+        /// Получить постраничный список.
         /// </summary>
-        /// <param name="page">номер страницы</param>
-        /// <param name="itemsPerPage">объем страницы</param>
-        /// <returns>Список курсов</returns>
+        /// <param name="page"> Номер страницы. </param>
+        /// <param name="itemsPerPage"> Количество элементов на странице. </param>
+        /// <returns> Список курсов. </returns>
         public async Task<List<Course>> GetPagedAsync(int page, int itemsPerPage)
         {
             var query = GetAll().Where(c => !c.Deleted);
