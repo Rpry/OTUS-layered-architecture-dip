@@ -1,85 +1,108 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataAccess.Entities;
 
-namespace DataAccess.Repositories
+namespace Services.Repositories.Abstractions
 {
     /// <summary>
-    /// Базовый интерфейс всех репозиториев
+    /// Описания общих методов для всех репозиториев.
     /// </summary>
-    public interface IRepository
-    {
-    }
-
-    /// <summary>
-    /// Описания общих методов для всех репозиториев
-    /// </summary>
-    /// <typeparam name="T">Тип Entity для репозитория</typeparam>
-    /// <typeparam name="TPrimaryKey">тип первичного ключа</typeparam>
-    public interface IRepository<T, TPrimaryKey> : IReadRepository<T, TPrimaryKey>
+    /// <typeparam name="T"> Тип Entity для репозитория. </typeparam>
+    /// <typeparam name="TPrimaryKey"> Тип первичного ключа. </typeparam>
+    public interface IRepository<T, TPrimaryKey>  
         where T : IEntity<TPrimaryKey>
     {
         /// <summary>
-        /// Удалить сущность
+        /// Запросить все сущности в базе.
         /// </summary>
-        /// <param name="id">ID удалённой сущности</param>
-        /// <returns>была ли сущность удалена</returns>
+        /// <param name="noTracking"> Вызвать с AsNoTracking.</param>
+        /// <returns> IQueryable массив сущностей.</returns>
+        IQueryable<T> GetAll(bool noTracking = false);
+
+        /// <summary>
+        /// Запросить все сущности в базе.
+        /// </summary>
+        /// <param name="cancellationToken"> Токен отмены. </param>
+        /// <param name="asNoTracking"> Вызвать с AsNoTracking. </param>
+        /// <returns> Список сущностей. </returns>
+        Task<List<T>> GetAllAsync(CancellationToken cancellationToken, bool asNoTracking = false);
+
+        /// <summary>
+        /// Получить сущность по Id.
+        /// </summary>
+        /// <param name="id"> Id сущности. </param>
+        /// <returns> Cущность. </returns>
+        T Get(TPrimaryKey id);
+
+        /// <summary>
+        /// Получить сущность по Id.
+        /// </summary>
+        /// <param name="id"> Id сущности. </param>
+        /// <returns> Cущность. </returns>
+        Task<T> GetAsync(TPrimaryKey id);
+        
+        /// <summary>
+        /// Удалить сущность.
+        /// </summary>
+        /// <param name="id"> Id удалённой сущности. </param>
+        /// <returns> Была ли сущность удалена. </returns>
         bool Delete(TPrimaryKey id);
 
         /// <summary>
-        /// Удалить сущность
+        /// Удалить сущность.
         /// </summary>
-        /// <param name="entity">сущность для удаления</param>
-        /// <returns>была ли сущность удалена</returns>
+        /// <param name="entity"> Cущность для удаления. </param>
+        /// <returns> Была ли сущность удалена. </returns>
         bool Delete(T entity);
 
         /// <summary>
-        /// Удалить сущности
+        /// Удалить сущности.
         /// </summary>
-        /// <param name="entities">Коллекция сущностей для удаления</param>
-        /// <returns>была ли операция удаления успешна</returns>
+        /// <param name="entities"> Коллекция сущностей для удаления. </param>
+        /// <returns> Была ли операция удаления успешна. </returns>
         bool DeleteRange(ICollection<T> entities);
 
         /// <summary>
-        /// Для сущности проставить состояние - что она изменена
+        /// Для сущности проставить состояние - что она изменена.
         /// </summary>
-        /// <param name="entity">сущность для изменения</param>
+        /// <param name="entity"> Сущность для изменения. </param>
         void Update(T entity);
 
         /// <summary>
-        /// Добавить в базу одну сущность
+        /// Добавить в базу одну сущность.
         /// </summary>
-        /// <param name="entity">сущность для добавления</param>
-        /// <returns>добавленная сущность</returns>
+        /// <param name="entity"> Сущность для добавления. </param>
+        /// <returns> Добавленная сущность. </returns>
         T Add(T entity);
 
         /// <summary>
-        /// Добавить в базу одну сущность
+        /// Добавить в базу одну сущность.
         /// </summary>
-        /// <param name="entity">сущность для добавления</param>
-        /// <returns>добавленная сущность</returns>
+        /// <param name="entity"> Сущность для добавления. </param>
+        /// <returns> Добавленная сущность. </returns>
         Task<T> AddAsync(T entity);
 
         /// <summary>
-        /// Добавить в базу массив сущностей
+        /// Добавить в базу массив сущностей.
         /// </summary>
-        /// <param name="entities">массив сущностей</param>
+        /// <param name="entities"> Массив сущностей. </param>
         void AddRange(List<T> entities);
 
         /// <summary>
-        /// Добавить в базу массив сущностей
+        /// Добавить в базу массив сущностей.
         /// </summary>
-        /// <param name="entities">массив сущностей</param>
+        /// <param name="entities"> Массив сущностей. </param>
         Task AddRangeAsync(ICollection<T> entities);
 
         /// <summary>
-        /// Сохранить изменения
+        /// Сохранить изменения.
         /// </summary>
         void SaveChanges();
 
         /// <summary>
-        /// Сохранить изменения
+        /// Сохранить изменения.
         /// </summary>
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }

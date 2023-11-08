@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DataAccess.Entities;
+using Services.Repositories.Abstractions;
 
 namespace DataAccess.Repositories
 {

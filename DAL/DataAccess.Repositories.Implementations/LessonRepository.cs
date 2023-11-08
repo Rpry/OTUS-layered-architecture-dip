@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataAccess.Entities;
 using DataAccess.EntityFramework;
+using Infrastructure.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories

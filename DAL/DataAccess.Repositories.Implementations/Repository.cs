@@ -5,40 +5,159 @@ using System.Threading.Tasks;
 using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Repositories
+namespace Infrastructure.Repositories.Implementations
 {
     /// <summary>
-    /// Репозиторий чтения и записи
+    /// Репозиторий.
     /// </summary>
-    /// <typeparam name="T">Тип сущности</typeparam>
-    /// <typeparam name="TPrimaryKey">Основной ключ</typeparam>
-    public abstract class Repository<T, TPrimaryKey> : ReadRepository<T, TPrimaryKey>, IRepository<T, TPrimaryKey> where T : class, IEntity<TPrimaryKey>
+    /// <typeparam name="T"> Тип сущности. </typeparam>
+    /// <typeparam name="TPrimaryKey"> Тип первичного ключа. </typeparam>
+    public abstract class Repository<T, TPrimaryKey> where T 
+        : class, IEntity<TPrimaryKey>
     {
-        protected Repository(DbContext context): base(context)
+        protected readonly DbContext Context;
+        private readonly DbSet<T> _entitySet;
+
+        protected Repository(DbContext context)
         {
+            Context = context;
+            _entitySet = Context.Set<T>();
+        }
+
+        #region Get
+
+        /// <summary>
+        /// Получить сущность по ID.
+        /// </summary>
+        /// <param name="id"> Id сущности. </param>
+        /// <returns> Cущность. </returns>
+        public virtual T Get(TPrimaryKey id)
+        {
+            return _entitySet.Find(id);
         }
 
         /// <summary>
-        /// Удалить сущность
+        /// Получить сущность по Id.
         /// </summary>
-        /// <param name="id">ID удалённой сущности</param>
-        /// <returns>была ли сущность удалена</returns>
+        /// <param name="id"> Id сущности. </param>
+        /// <returns> Cущность. </returns>
+        public virtual async Task<T> GetAsync(TPrimaryKey id)
+        {
+            return await _entitySet.FindAsync((object)id);
+        }
+
+        #endregion
+
+        #region GetAll
+        
+        /// <summary>
+        /// Запросить все сущности в базе.
+        /// </summary>
+        /// <param name="asNoTracking"> Вызвать с AsNoTracking. </param>
+        /// <returns> IQueryable массив сущностей. </returns>
+        public virtual IQueryable<T> GetAll(bool asNoTracking = false)
+        {
+            return asNoTracking ? _entitySet.AsNoTracking() : _entitySet;
+        }
+
+        /// <summary>
+        /// Запросить все сущности в базе.
+        /// </summary>
+        /// <param name="cancellationToken"> Токен отмены </param>
+        /// <param name="asNoTracking"> Вызвать с AsNoTracking. </param>
+        /// <returns> Список сущностей. </returns>
+        public async Task<List<T>> GetAllAsync(CancellationToken cancellationToken, bool asNoTracking = false)
+        {
+            return await GetAll().ToListAsync(cancellationToken);
+        }
+        
+
+        #endregion
+        
+        #region Create
+
+        /// <summary>
+        /// Добавить в базу сущность.
+        /// </summary>
+        /// <param name="entity"> Cущность для добавления. </param>
+        /// <returns>. Добавленная сущность. </returns>
+        public virtual T Add(T entity)
+        {
+            var objToReturn = _entitySet.Add(entity);
+            return objToReturn.Entity;
+        }
+
+        /// <summary>
+        /// Добавить в базу одну сущность.
+        /// </summary>
+        /// <param name="entity"> Сущность для добавления. </param>
+        /// <returns> Добавленная сущность. </returns>
+        public virtual async Task<T> AddAsync(T entity)
+        {
+            return (await _entitySet.AddAsync(entity)).Entity;
+        }
+
+        /// <summary>
+        /// Добавить в базу массив сущностей.
+        /// </summary>
+        /// <param name="entities"> Массив сущностей. </param>
+        public virtual void AddRange(List<T> entities)
+        {
+            var enumerable = entities as IList<T> ?? entities.ToList();
+            _entitySet.AddRange(enumerable);
+        }
+
+        /// <summary>
+        /// Добавить в базу массив сущностей.
+        /// </summary>
+        /// <param name="entities"> Массив сущностей. </param>
+        public virtual async Task AddRangeAsync(ICollection<T> entities)
+        {
+            if (entities == null || !entities.Any())
+            {
+                return;
+            }
+            await _entitySet.AddRangeAsync(entities);
+        }
+
+        #endregion
+
+        #region Update
+
+        /// <summary>
+        /// Для сущности проставить состояние - что она изменена.
+        /// </summary>
+        /// <param name="entity"> Сущность для изменения. </param>
+        public virtual void Update(T entity)
+        {
+            Context.Entry(entity).State = EntityState.Modified;
+        }
+
+        #endregion
+
+        #region Delete
+
+        /// <summary>
+        /// Удалить сущность.
+        /// </summary>
+        /// <param name="id"> Id удалённой сущности. </param>
+        /// <returns> Была ли сущность удалена. </returns>
         public virtual bool Delete(TPrimaryKey id)
         {
-            var obj = EntitySet.Find(id);
+            var obj = _entitySet.Find(id);
             if (obj == null)
             {
                 return false;
             }
-            EntitySet.Remove(obj);
+            _entitySet.Remove(obj);
             return true;
         }
 
         /// <summary>
-        /// Удалить сущность
+        /// Удалить сущность.
         /// </summary>
-        /// <param name="entity">сущность для удаления</param>
-        /// <returns>была ли сущность удалена</returns>
+        /// <param name="entity"> Сущность для удаления. </param>
+        /// <returns> Была ли сущность удалена. </returns>
         public virtual bool Delete(T entity)
         {
             if (entity == null)
@@ -50,75 +169,26 @@ namespace DataAccess.Repositories
         }
 
         /// <summary>
-        /// Удалить сущности
+        /// Удалить сущности.
         /// </summary>
-        /// <param name="entities">Коллекция сущностей для удаления</param>
-        /// <returns>была ли операция завершена успешно</returns>
+        /// <param name="entities"> Коллекция сущностей для удаления. </param>
+        /// <returns> Была ли операция завершена успешно. </returns>
         public virtual bool DeleteRange(ICollection<T> entities)
         {
             if (entities == null || !entities.Any())
             {
                 return false;
             }
-            EntitySet.RemoveRange(entities);
+            _entitySet.RemoveRange(entities);
             return true;
         }
 
-        /// <summary>
-        /// Для сущности проставить состояние - что она изменена
-        /// </summary>
-        /// <param name="entity">сущность для изменения</param>
-        public virtual void Update(T entity)
-        {
-            Context.Entry(entity).State = EntityState.Modified;
-        }
+        #endregion
+
+        #region SaveChanges
 
         /// <summary>
-        /// Добавить в базу одну сущность
-        /// </summary>
-        /// <param name="entity">сущность для добавления</param>
-        /// <returns>добавленная сущность</returns>
-        public virtual T Add(T entity)
-        {
-            var objToReturn = Context.Set<T>().Add(entity);
-            return objToReturn.Entity;
-        }
-
-        /// <summary>
-        /// Добавить в базу одну сущность
-        /// </summary>
-        /// <param name="entity">сущность для добавления</param>
-        /// <returns>добавленная сущность</returns>
-        public virtual async Task<T> AddAsync(T entity)
-        {
-            return (await Context.Set<T>().AddAsync(entity)).Entity;
-        }
-
-        /// <summary>
-        /// Добавить в базу массив сущностей
-        /// </summary>
-        /// <param name="entities">массив сущностей</param>
-        public virtual void AddRange(List<T> entities)
-        {
-            var enumerable = entities as IList<T> ?? entities.ToList();
-            Context.Set<T>().AddRange(enumerable);
-        }
-
-        /// <summary>
-        /// Добавить в базу массив сущностей
-        /// </summary>
-        /// <param name="entities">массив сущностей</param>
-        public virtual async Task AddRangeAsync(ICollection<T> entities)
-        {
-            if (entities == null || !entities.Any())
-            {
-                return;
-            }
-            await EntitySet.AddRangeAsync(entities);
-        }
-
-        /// <summary>
-        /// Сохранить изменения
+        /// Сохранить изменения.
         /// </summary>
         public virtual void SaveChanges()
         {
@@ -126,11 +196,13 @@ namespace DataAccess.Repositories
         }
 
         /// <summary>
-        /// Сохранить изменения
+        /// Сохранить изменения.
         /// </summary>
         public virtual async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await Context.SaveChangesAsync(cancellationToken);
         }
+
+        #endregion
     }
 }
