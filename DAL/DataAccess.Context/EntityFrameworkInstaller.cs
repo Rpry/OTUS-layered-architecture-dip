@@ -10,8 +10,7 @@ namespace DataAccess.EntityFramework
         {
             services
                 .AddDbContext<DatabaseContext>(o => o
-                    .UseLazyLoadingProxies() // lazy loading
-                    .UseSqlServer(connectionString));
+                    .UseSqlite(connectionString));
             return services;
         }
     }
